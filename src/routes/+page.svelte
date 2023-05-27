@@ -4,6 +4,7 @@
     const baseURL = getServerURL();
 
     let activationFunction = 'STEP';
+    let populationSize = 100;
     let addNodeMR = 0.8;
     let addConnectionMR = 0.4;
     let removeNodeMR = 0.001;
@@ -15,7 +16,7 @@
     let compatibilityThreshold = 1.5;
 
     async function uploadToServer() {
-        const url = `http://${await baseURL}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR}&addConnectionMR=${addConnectionMR}&removeNodeMR=${removeNodeMR}&removeConnectionMR=${removeConnectionMR}&changeWeightMR=${changeWeightMR}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
+        const url = `http://${await baseURL}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR}&populationSize=${populationSize}&addConnectionMR=${addConnectionMR}&removeNodeMR=${removeNodeMR}&removeConnectionMR=${removeConnectionMR}&changeWeightMR=${changeWeightMR}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
         const response = await fetch(url);
         console.log(await response.json());
     }
@@ -32,6 +33,7 @@
     <option value="SELU">SELU</option>
 </select>
 
+<input type="number" bind:value={populationSize}>
 <input type="number" bind:value={addNodeMR}>
 <input type="number" bind:value={addConnectionMR}>
 <input type="number" bind:value={removeNodeMR}>
