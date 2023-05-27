@@ -1,5 +1,6 @@
 <script lang="ts">
     import { getServerURL } from '$lib/scripts/firebaseControl';
+  import { onMount } from 'svelte';
 
     const baseURL = getServerURL();
 
@@ -15,17 +16,32 @@
     let c3 = 2;
     let compatibilityThreshold = 1.5;
 
+    let lastTimeActivated = -1;
+    let currentTime = -1;
+
+    onMount(() => {
+        lastTimeActivated = parseInt(localStorage.getItem('lastTimeActivated') ?? "0") ?? 0;
+
+        currentTime = Date.now();
+
+        setInterval(() => {
+            currentTime = Date.now();
+        }, 1000);
+    })
+
     async function uploadToServer() {
         const url = `http://${await baseURL}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR}&populationSize=${populationSize}&addConnectionMR=${addConnectionMR}&removeNodeMR=${removeNodeMR}&removeConnectionMR=${removeConnectionMR}&changeWeightMR=${changeWeightMR}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
         const response = await fetch(url);
         console.log(await response.json());
+
+        lastTimeActivated = Date.now();
+        localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
     }
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<!-- dropdown menu with options: STEP, RELU, SELU -->
 <select bind:value={activationFunction}>
     <option value="STEP">STEP</option>
     <option value="SIGMOID">SIGMOID</option>
@@ -44,6 +60,8 @@
 <input type="number" bind:value={c3}>
 <input type="number" bind:value={compatibilityThreshold}>
 
-<button on:click={uploadToServer}>Upload</button>
-
-<!-- url + /?activationFunction=STEP&addNodeMR=0.8&addConnectionMR=0.4&removeNodeMR=0.001&removeConnectionMR=0.00001&changeWeightMR=0.1&c1=4&c2=2.5&c3=2&compatibilityThreshold=1.5 -->
+{#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
+    <button on:click={uploadToServer}>Upload to server</button>
+{:else if lastTimeActivated != -1}
+    <button disabled>{Math.round((lastTimeActivated + 60000 - currentTime) / 1000)}</button>
+{/if}
