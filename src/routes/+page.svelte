@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getServerURL } from '$lib/scripts/firebaseControl';
-  import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
 
     const baseURL = getServerURL();
 
@@ -59,9 +59,9 @@
 <input type="number" bind:value={c2}>
 <input type="number" bind:value={c3}>
 <input type="number" bind:value={compatibilityThreshold}>
-
-{#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
+<button on:click={uploadToServer}>Upload to server</button>
+<!-- {#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
     <button on:click={uploadToServer}>Upload to server</button>
 {:else if lastTimeActivated != -1}
     <button disabled>{Math.round((lastTimeActivated + 60000 - currentTime) / 1000)}</button>
-{/if}
+{/if} -->
