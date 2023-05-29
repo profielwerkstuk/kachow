@@ -49,6 +49,11 @@ export function load() {
 		Cars.find(Car => Car.CarInstance.id === data.detail.id)?.CarInstance.reset(true);
 	});
 
+	addEventListener("removeCar", (data) => {
+		// remove car from cars array with id from data.detail.id
+		Cars = Cars.filter(Car => Car.CarInstance.id !== data.detail.id);
+	});
+
 
 	const config = {
 		structure: {
@@ -96,7 +101,7 @@ export function load() {
 				const response = Car.genome.activate(Car.CarInstance.getDistances(Sim.tiles))
 
 				Car.CarInstance.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
-				Car.genome.fitness = Car.CarInstance.stats.distanceTravelled / Car.CarInstance.stats.survivalTime * Car.CarInstance.stats.tilesTravelled;
+				Car.CarInstance.stats.fitness = Car.CarInstance.stats.distanceTravelled / Car.CarInstance.stats.survivalTime * Car.CarInstance.stats.tilesTravelled;
 			});
 
 			if (fancy) FancyVis.update(Cars)

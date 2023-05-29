@@ -50,7 +50,8 @@ export class Car {
 		survivalTime: 1,
 		distanceTravelled: 1,
 		timesHit: 0,
-		tileEntryTime: 1
+		tileEntryTime: 1,
+		fitness: 0
 	}
 
 	tiles: Tile[] = []
