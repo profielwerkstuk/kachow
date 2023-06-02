@@ -1,8 +1,6 @@
 <script lang="ts">
-    import { getServerURL } from '$lib/scripts/firebaseControl';
+    import { uploadToServer } from '$lib/scripts/firebaseControl';
     import { onMount } from 'svelte';
-
-    const baseURL = getServerURL();
 
     let activationFunction = 'STEP';
     let populationSize = 100;
@@ -29,39 +27,43 @@
         }, 1000);
     })
 
-    async function uploadToServer() {
-        const url = `${await baseURL}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR}&populationSize=${populationSize}&addConnectionMR=${addConnectionMR}&removeNodeMR=${removeNodeMR}&removeConnectionMR=${removeConnectionMR}&changeWeightMR=${changeWeightMR}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
-        const response = await fetch(url);
-        console.log(await response.json());
-
-        lastTimeActivated = Date.now();
-        localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
-    }
+    let buttonPressed = false;
+    let result = "Uw aanvraag wordt verwerkt...";
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
-<select bind:value={activationFunction}>
-    <option value="STEP">STEP</option>
-    <option value="SIGMOID">SIGMOID</option>
-    <option value="RELU">RELU</option>
-    <option value="SELU">SELU</option>
-</select>
+{#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
+    <form on:submit={async () => {
+        buttonPressed = true;
+        lastTimeActivated = Date.now();
+        localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
+        result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, lastTimeActivated)
+    }}>
+        <select bind:value={activationFunction}>
+            <option value="STEP">STEP</option>
+            <option value="SIGMOID">SIGMOID</option>
+            <option value="RELU">RELU</option>
+            <option value="SELU">SELU</option>
+        </select>
+        
+        <input type="number" max=100 min=2 bind:value={populationSize}>
+        <input type="number" step=.01 max=1 min=0 bind:value={addNodeMR}>
+        <input type="number" step=.01 max=1 min=0 bind:value={addConnectionMR}>
+        <input type="number" step=.001 max=1 min=0 bind:value={removeNodeMR}>
+        <input type="number" step=.001 max=1 min=0 bind:value={removeConnectionMR}>
+        <input type="number" step=.01 max=1 min=0 bind:value={changeWeightMR}>
+        <input type="number" step=.5 min=0 bind:value={c1}>
+        <input type="number" step=.5 min=0 bind:value={c2}>
+        <input type="number" step=.5 min=0 bind:value={c3}>
+        <input type="number" step=.5 min=0 bind:value={compatibilityThreshold}>
 
-<input type="number" bind:value={populationSize}>
-<input type="number" bind:value={addNodeMR}>
-<input type="number" bind:value={addConnectionMR}>
-<input type="number" bind:value={removeNodeMR}>
-<input type="number" bind:value={removeConnectionMR}>
-<input type="number" bind:value={changeWeightMR}>
-<input type="number" bind:value={c1}>
-<input type="number" bind:value={c2}>
-<input type="number" bind:value={c3}>
-<input type="number" bind:value={compatibilityThreshold}>
-<button on:click={uploadToServer}>Upload to server</button>
-<!-- {#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
-    <button on:click={uploadToServer}>Upload to server</button>
-{:else if lastTimeActivated != -1}
-    <button disabled>{Math.round((lastTimeActivated + 60000 - currentTime) / 1000)}</button>
-{/if} -->
+        <input type="submit" value="Upload to server" />
+    </form>
+{:else if lastTimeActivated != -1 && buttonPressed}
+    <p>{result}</p>
+{:else if lastTimeActivated != -1 && !buttonPressed}
+    <p>Uw netwerk is geupload!</p>
+    <!-- visual -->
+{/if}
