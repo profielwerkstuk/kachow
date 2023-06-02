@@ -5,8 +5,8 @@ import type { Coordinate } from "./types";
 import { ActivationFunctions } from "./classes/NEAT/index";
 import { FancyVisualiser } from "./classes/FancyVisualiser";
 import { Genome } from "./classes/NEAT/Genome";
-import { onSnapshot, collection, getDocs } from "firebase/firestore";
-import { firebase } from "./firebaseControl";
+import { onSnapshot, collection } from "firebase/firestore";
+import { firebase } from "./serverControl";
 
 // =============== ⚙ Settings =============== //
 
