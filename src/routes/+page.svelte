@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { uploadToServer } from '$lib/scripts/firebaseControl';
+    import { uploadToServer, getActivationFunctions } from '$lib/scripts/serverControl';
     import { onMount } from 'svelte';
 
     let activationFunction = 'STEP';
@@ -31,36 +31,42 @@
     let result = "Uw aanvraag wordt verwerkt...";
 </script>
 
-{#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
-    <form on:submit={async () => {
-        formSubmitted = true;
-        lastTimeActivated = Date.now();
-        localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
-        result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, lastTimeActivated)
-    }}>
-        <select bind:value={activationFunction}>
-            <option value="STEP">STEP</option>
-            <option value="SIGMOID">SIGMOID</option>
-            <option value="RELU">RELU</option>
-            <option value="SELU">SELU</option>
-        </select>
+{#await getActivationFunctions()}
+    <p>loading...</p>
+{:then functions}
+    {#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
+        <form on:submit={async () => {
+            formSubmitted = true;
+            lastTimeActivated = Date.now();
+            localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
+            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, lastTimeActivated)
+        }}>
 
-        <input type="number" max=100 min=2 bind:value={populationSize}>
-        <input type="number" step=.01 max=1 min=0 bind:value={addNodeMR}>
-        <input type="number" step=.01 max=1 min=0 bind:value={addConnectionMR}>
-        <input type="number" step=.001 max=1 min=0 bind:value={removeNodeMR}>
-        <input type="number" step=.001 max=1 min=0 bind:value={removeConnectionMR}>
-        <input type="number" step=.01 max=1 min=0 bind:value={changeWeightMR}>
-        <input type="number" step=.5 min=0 bind:value={c1}>
-        <input type="number" step=.5 min=0 bind:value={c2}>
-        <input type="number" step=.5 min=0 bind:value={c3}>
-        <input type="number" step=.5 min=0 bind:value={compatibilityThreshold}>
+            <select bind:value={activationFunction}>
+                {#each functions as functionName}
+                    <option value={functionName}>{functionName}</option>
+                {/each}
+            </select>
 
-        <input type="submit" value="Upload to server" />
-    </form>
-{:else if lastTimeActivated != -1 && formSubmitted}
-    <p>{result}</p>
-{:else if lastTimeActivated != -1 && !formSubmitted}
-    <p>Uw netwerk is geupload!</p>
-    <!-- visual -->
-{/if}
+            <input type="number" max=100 min=2 bind:value={populationSize}>
+            <input type="number" step=.01 max=1 min=0 bind:value={addNodeMR}>
+            <input type="number" step=.01 max=1 min=0 bind:value={addConnectionMR}>
+            <input type="number" step=.001 max=1 min=0 bind:value={removeNodeMR}>
+            <input type="number" step=.001 max=1 min=0 bind:value={removeConnectionMR}>
+            <input type="number" step=.01 max=1 min=0 bind:value={changeWeightMR}>
+            <input type="number" step=.5 min=0 bind:value={c1}>
+            <input type="number" step=.5 min=0 bind:value={c2}>
+            <input type="number" step=.5 min=0 bind:value={c3}>
+            <input type="number" step=.5 min=0 bind:value={compatibilityThreshold}>
+
+            <input type="submit" value="Upload to server" />
+        </form>
+    {:else if lastTimeActivated != -1 && formSubmitted}
+        <p>{result}</p>
+    {:else if lastTimeActivated != -1 && !formSubmitted}
+        <p>Uw netwerk is geupload!</p>
+        <!-- visual -->
+    {/if}
+{:catch error}
+    <p>error: {error.message}</p>
+{/await}

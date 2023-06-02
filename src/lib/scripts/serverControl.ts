@@ -45,4 +45,26 @@ async function uploadToServer(activationFunction: string, addNodeMR: number, pop
 	return "Uw netwerk kon niet geupload worden";
 }
 
-export { firebase, uploadToServer };
+async function getActivationFunctions(): Promise<string[]> {
+	// get activation functions from server
+	const baseurls = await getServerURL();
+
+	let attempt = 0;
+	let finished = false;
+
+	while (!finished) {
+		try {
+			const response = await fetch(baseurls + "/activationFunctions");
+			return await response.json();
+		} catch (e) {
+			attempt++;
+			if (attempt - 1 > baseurls.length) {
+				finished = true;
+			}
+		}
+	}
+
+	return ["SIGMOID","TANH","LRELU","RELU","GAUSSIAN","ELU","SELU","STEP","LINEAR","SWISH"];
+}
+
+export { firebase, uploadToServer, getActivationFunctions };
