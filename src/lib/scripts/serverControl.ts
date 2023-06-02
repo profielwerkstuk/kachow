@@ -58,7 +58,7 @@ async function getActivationFunctions(): Promise<string[]> {
 
 	while (!finished) {
 		try {
-			const response = await fetch(baseurls + "/activationFunctions");
+			const response = await fetch(baseurls[attempt] + "/activationFunctions");
 			return await response.json();
 		} catch (e) {
 			attempt++;

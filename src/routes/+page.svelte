@@ -7,7 +7,7 @@
     let addNodeMR = 0.8;
     let addConnectionMR = 0.4;
     let removeNodeMR = 0.001;
-    let removeConnectionMR = 0.00001;
+    let removeConnectionMR = 0.001;
     let changeWeightMR = 0.1;
     let c1 = 4;
     let c2 = 2.5;
