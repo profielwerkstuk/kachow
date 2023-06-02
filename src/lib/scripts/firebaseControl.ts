@@ -15,7 +15,34 @@ const app = initializeApp(firebaseConfig);
 const firebase = getFirestore(app);
 
 async function getServerURL() {
-    return (await getDoc(doc(firebase, "remoteConfig/tunnelInfo"))).data()?.url
+    return (await getDoc(doc(firebase, "remoteConfig/tunnelInfo"))).data()?.urls
 }
 
-export { firebase, getServerURL };
+async function uploadToServer(activationFunction: string, addNodeMR: number, populationSize: number, addConnectionMR: number, removeNodeMR: number, removeConnectionMR: number, changeWeightMR: number, c1: number, c2: number, c3: number, compatibilityThreshold: number, lastTimeActivated: number) {
+  let attempt = 0;
+  let finished = false;
+
+  const baseurls = await getServerURL();
+
+  while (!finished) {
+    try {
+      const url = `${baseurls[attempt]}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR}&populationSize=${populationSize}&addConnectionMR=${addConnectionMR}&removeNodeMR=${removeNodeMR}&removeConnectionMR=${removeConnectionMR}&changeWeightMR=${changeWeightMR}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
+      const response = await fetch(url);
+      console.log(await response.json());
+      finished = true;
+      return "Uw netwerk is geupload";
+    } catch (e) {
+      attempt++;
+      if (attempt - 1 > baseurls.length) {
+        finished = true;
+        lastTimeActivated = 0;
+        localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
+        return "Er is iets mis gegaan tijdens het uploaden van uw netwerk";
+      }
+    }
+  }
+  
+  return "Uw netwerk kon niet geupload worden";
+}
+
+export { firebase, uploadToServer };
