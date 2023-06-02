@@ -26,7 +26,7 @@ async function uploadToServer(activationFunction: string, addNodeMR: number, pop
 
 	while (!finished) {
 		try {
-			const url = `${baseurls[attempt]}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR * 100}&populationSize=${populationSize * 100}&addConnectionMR=${addConnectionMR * 100}&removeNodeMR=${removeNodeMR * 100}&removeConnectionMR=${removeConnectionMR * 100}&changeWeightMR=${changeWeightMR * 100}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
+			const url = `${baseurls[attempt]}/?activationFunction=${activationFunction}&addNodeMR=${addNodeMR / 100}&populationSize=${populationSize / 100}&addConnectionMR=${addConnectionMR / 100}&removeNodeMR=${removeNodeMR / 100}&removeConnectionMR=${removeConnectionMR / 100}&changeWeightMR=${changeWeightMR / 100}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}`;
 			const response = await fetch(url);
 			console.log(await response.json());
 			finished = true;
