@@ -27,16 +27,13 @@
         }, 1000);
     })
 
-    let buttonPressed = false;
+    let formSubmitted = false;
     let result = "Uw aanvraag wordt verwerkt...";
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
 {#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
     <form on:submit={async () => {
-        buttonPressed = true;
+        formSubmitted = true;
         lastTimeActivated = Date.now();
         localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
         result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, lastTimeActivated)
@@ -47,7 +44,7 @@
             <option value="RELU">RELU</option>
             <option value="SELU">SELU</option>
         </select>
-        
+
         <input type="number" max=100 min=2 bind:value={populationSize}>
         <input type="number" step=.01 max=1 min=0 bind:value={addNodeMR}>
         <input type="number" step=.01 max=1 min=0 bind:value={addConnectionMR}>
@@ -61,9 +58,9 @@
 
         <input type="submit" value="Upload to server" />
     </form>
-{:else if lastTimeActivated != -1 && buttonPressed}
+{:else if lastTimeActivated != -1 && formSubmitted}
     <p>{result}</p>
-{:else if lastTimeActivated != -1 && !buttonPressed}
+{:else if lastTimeActivated != -1 && !formSubmitted}
     <p>Uw netwerk is geupload!</p>
     <!-- visual -->
 {/if}
