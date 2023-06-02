@@ -4,11 +4,11 @@
 
     let activationFunction = 'STEP';
     let populationSize = 100;
-    let addNodeMR = 0.8;
-    let addConnectionMR = 0.4;
-    let removeNodeMR = 0.001;
-    let removeConnectionMR = 0.001;
-    let changeWeightMR = 0.1;
+    let addNodeMR = 80;
+    let addConnectionMR = 40;
+    let removeNodeMR = 0.1;
+    let removeConnectionMR = 0.1;
+    let changeWeightMR = 10;
     let c1 = 4;
     let c2 = 2.5;
     let c3 = 2;
@@ -49,16 +49,16 @@
             {/each}
         </select>
 
-        <input type="number" max=100 min=2 bind:value={populationSize}>
-        <input type="number" step=.01 max=1 min=0 bind:value={addNodeMR}>
-        <input type="number" step=.01 max=1 min=0 bind:value={addConnectionMR}>
-        <input type="number" step=.001 max=1 min=0 bind:value={removeNodeMR}>
-        <input type="number" step=.001 max=1 min=0 bind:value={removeConnectionMR}>
-        <input type="number" step=.01 max=1 min=0 bind:value={changeWeightMR}>
-        <input type="number" step=.5 min=0 bind:value={c1}>
-        <input type="number" step=.5 min=0 bind:value={c2}>
-        <input type="number" step=.5 min=0 bind:value={c3}>
-        <input type="number" step=.5 min=0 bind:value={compatibilityThreshold}>
+        <input type="number" max=250 min=2 bind:value={populationSize}>
+        <input type="number" step=0.1 max=100 min=0 bind:value={addNodeMR}>
+        <input type="number" step=0.1 max=100 min=0 bind:value={addConnectionMR}>
+        <input type="number" step=0.1 max=100 min=0 bind:value={removeNodeMR}>
+        <input type="number" step=0.1 max=100 min=0 bind:value={removeConnectionMR}>
+        <input type="number" step=.01 max=100 min=0 bind:value={changeWeightMR}>
+        <input type="number" step=.1 min=0 bind:value={c1}>
+        <input type="number" step=.1 min=0 bind:value={c2}>
+        <input type="number" step=.1 min=0 bind:value={c3}>
+        <input type="number" step=.1 min=0 bind:value={compatibilityThreshold}>
 
         <input type="submit" value="Upload to server" />
     </form>
