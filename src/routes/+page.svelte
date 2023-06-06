@@ -14,6 +14,8 @@
     let c3 = 2;
     let compatibilityThreshold = 1.5;
 
+    let carName = "superCar";
+
     let lastTimeActivated = -1;
     let currentTime = -1;
 
@@ -41,7 +43,7 @@
             formSubmitted = true;
             lastTimeActivated = Date.now();
             localStorage.setItem("lastTimeActivated", lastTimeActivated.toString());
-            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, lastTimeActivated);
+            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, carName, lastTimeActivated);
         }}
     >
         <select bind:value={activationFunction}>
@@ -60,6 +62,7 @@
         <input type="number" step=".1" min="0" bind:value={c2} />
         <input type="number" step=".1" min="0" bind:value={c3} />
         <input type="number" step=".1" min="0" bind:value={compatibilityThreshold} />
+        <input type="text" bind:value={carName} />
 
         <input type="submit" value="Upload to server" />
     </form>
