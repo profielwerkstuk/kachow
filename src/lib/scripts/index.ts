@@ -87,6 +87,10 @@ export function load() {
 				Car.id = change.doc._key.path.segments.slice(-1)[0];
 				Cars.push({ CarInstance: Car, genome: loaded, fitness: data.fitness });
 			}
+
+			if (change.type === "removed") {
+				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
+			}
 		});
 	});
 
