@@ -32,6 +32,7 @@ Sim.init();
 Vis.init();
 
 let fancy = false;
+let running = false;
 
 export function load() {
 	addEventListener("terminateRun", () => {
@@ -120,8 +121,12 @@ export function load() {
 		"l": () => {
 			console.log("Loading...");
 			Sim.reset();
+			Cars.forEach(c => c.CarInstance.reset());
 
-			runSim();
+			if (!running) {
+				running = true;
+				runSim();
+			}
 		},
 		"a": addCar
 	}

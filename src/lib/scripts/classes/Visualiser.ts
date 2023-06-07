@@ -60,7 +60,7 @@ export class Visualiser {
 			const Car = _Car.CarInstance;
 
 			// # Render car
-			this.ctx.fillStyle = "blue";
+			this.ctx.fillStyle = Car.colour ?? "blue";
 
 			// This rotates and transforms the canvas so the car is properly drawn
 			this.ctx.translate(Car.coordinates[0], Car.coordinates[1]);

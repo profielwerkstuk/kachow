@@ -15,13 +15,13 @@
             return 0;
         },
         (a: DING, b: DING) => {
-            if (a.CarInstance.stats.distanceTravelled < b.CarInstance.stats.distanceTravelled) return -1;
-            if (a.CarInstance.stats.distanceTravelled > b.CarInstance.stats.distanceTravelled) return 1;
+            if (a.CarInstance.stats.distanceTravelled < b.CarInstance.stats.distanceTravelled) return 1;
+            if (a.CarInstance.stats.distanceTravelled > b.CarInstance.stats.distanceTravelled) return -1;
             return 0;
         },
         (a: DING, b: DING) => {
-            if (a.CarInstance.stats.survivalTime < b.CarInstance.stats.survivalTime) return -1;
-            if (a.CarInstance.stats.survivalTime > b.CarInstance.stats.survivalTime) return 1;
+            if (a.CarInstance.stats.survivalTime < b.CarInstance.stats.survivalTime) return 1;
+            if (a.CarInstance.stats.survivalTime > b.CarInstance.stats.survivalTime) return -1;
             return 0;
         },
     ];
