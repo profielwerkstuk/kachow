@@ -81,7 +81,7 @@
                     <div id="CarInstance">
                         <div class="info">
                             <p class="rank">Nr. {i + 1}</p>
-                            <p class="name">{Car.CarInstance.id}</p>
+                            <p class="name">{Car.CarInstance.carName}</p>
                             <p class="score">{JSON.stringify(Math.round(Car[scoring[0]][scoring[1]][scoring[2]]))}</p>
                             <div class="buttons">
                                 <button id="kill" on:click={() => dispatchEvent(new CustomEvent("resetCar", { detail: { id: Car.CarInstance.id } }))}>Restart</button>
