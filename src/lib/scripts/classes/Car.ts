@@ -75,7 +75,8 @@ export class Car {
 		public width: number,
 		public height: number,
 		public tileSize: number,
-		carViewingDistance: number
+		carViewingDistance: number,
+		public carName: string
 	) {
 		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)] as Coordinate;
 		this.settings.viewDistance = carViewingDistance;
