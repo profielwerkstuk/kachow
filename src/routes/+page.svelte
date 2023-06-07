@@ -16,6 +16,8 @@
 
     let carName = "superCar";
 
+    let carColour = "#3800fe";
+
     let lastTimeActivated = -1;
     let currentTime = -1;
 
@@ -46,7 +48,18 @@
             formSubmitted = true;
             lastTimeActivated = Date.now();
             localStorage.setItem("lastTimeActivated", lastTimeActivated.toString());
-            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, carName, lastTimeActivated);
+            result = await uploadToServer(
+                activationFunction, 
+                addNodeMR, 
+                populationSize, 
+                addConnectionMR, 
+                removeNodeMR, 
+                removeConnectionMR, 
+                changeWeightMR, 
+                c1, c2, c3, 
+                compatibilityThreshold, 
+                carColour, carName, 
+                lastTimeActivated);
         }}
     >
         <label>
@@ -97,6 +110,10 @@
         <label>
             "Compatibility threshold" (0+)
             <input type="number" step=".1" min="0" bind:value={compatibilityThreshold} />
+        </label>
+        <label>
+            Uw kleur
+            <input type="color" bind:value={carColour} />
         </label>
         <label>
             Uw naam

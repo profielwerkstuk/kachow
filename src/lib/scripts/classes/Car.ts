@@ -76,6 +76,7 @@ export class Car {
 		public height: number,
 		public tileSize: number,
 		carViewingDistance: number,
+		public carColour: string,
 		public carName: string
 	) {
 		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)] as Coordinate;
@@ -103,7 +104,8 @@ export class Car {
 			survivalTime: 1,
 			distanceTravelled: 1,
 			timesHit: 0,
-			tileEntryTime: 1
+			tileEntryTime: 1,
+			fitness: 0
 		}
 		else this.stats.timesHit++;
 	}
@@ -114,8 +116,8 @@ export class Car {
 		this.angle = this.angle % (Math.PI * 2);
 
 		// Convenience?
-		let xCoord = this.coordinates[0];
-		let yCoord = this.coordinates[1];
+		const xCoord = this.coordinates[0];
+		const yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
 			this.stats.tilesTravelled++;

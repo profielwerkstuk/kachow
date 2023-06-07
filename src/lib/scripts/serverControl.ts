@@ -18,7 +18,7 @@ async function getServerURL(): Promise<string[]> {
 	return (await getDoc(doc(firebase, "remoteConfig/tunnelInfo"))).data()?.urls
 }
 
-async function uploadToServer(activationFunction: string, addNodeMR: number, populationSize: number, addConnectionMR: number, removeNodeMR: number, removeConnectionMR: number, changeWeightMR: number, c1: number, c2: number, c3: number, compatibilityThreshold: number, carName: string, lastTimeActivated: number): Promise<string> {
+async function uploadToServer(activationFunction: string, addNodeMR: number, populationSize: number, addConnectionMR: number, removeNodeMR: number, removeConnectionMR: number, changeWeightMR: number, c1: number, c2: number, c3: number, compatibilityThreshold: number, carColour: string, carName: string, lastTimeActivated: number): Promise<string> {
 	let attempt = 0;
 	let finished = false;
 
@@ -26,14 +26,15 @@ async function uploadToServer(activationFunction: string, addNodeMR: number, pop
 
 	while (!finished) {
 		try {
-			const url = `${baseurls[attempt]}/?activationFunction=${activationFunction}&populationSize=${populationSize}&addNodeMR=${addNodeMR / 100}&addConnectionMR=${addConnectionMR / 100}&removeNodeMR=${removeNodeMR / 100}&removeConnectionMR=${removeConnectionMR / 100}&changeWeightMR=${changeWeightMR / 100}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}&carName=${carName}`;
+			const url = `${baseurls[attempt]}/?activationFunction=${activationFunction}&populationSize=${populationSize}&addNodeMR=${addNodeMR / 100}&addConnectionMR=${addConnectionMR / 100}&removeNodeMR=${removeNodeMR / 100}&removeConnectionMR=${removeConnectionMR / 100}&changeWeightMR=${changeWeightMR / 100}&c1=${c1}&c2=${c2}&c3=${c3}&compatibilityThreshold=${compatibilityThreshold}&carColour=${carColour.slice(1)}&carName=${carName}`;
 			const response = await fetch(url);
 			console.log(await response.json());
 			finished = true;
 			return "Uw netwerk is geupload";
 		} catch (e) {
 			attempt++;
-			if (attempt - 1 > baseurls.length) {
+			console.log(e);
+			if (attempt > baseurls.length - 1) {
 				finished = true;
 				lastTimeActivated = 0;
 				localStorage.setItem('lastTimeActivated', lastTimeActivated.toString());
