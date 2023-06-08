@@ -123,45 +123,6 @@
         overflow: hidden;
     }
 
-    #selector {
-        /* background-color: red; */
-        margin: 10px;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    #selector button {
-        height: 100%;
-        width: 100%;
-
-        padding: 20px;
-
-        font-family: "Poppins", sans-serif;
-
-        background-color: #405cf5;
-
-        border-radius: 6px;
-        border-width: 0;
-        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
-        box-sizing: border-box;
-        color: #fff;
-        cursor: pointer;
-
-        font-size: 100%;
-
-        outline: none;
-
-        text-align: center;
-        text-transform: none;
-    }
-
-    #selector button:focus {
-        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.2) 0 6px 15px 0, rgba(0, 0, 0, 0.1) 0 2px 2px 0, rgba(50, 151, 211, 0.3) 0 0 0 4px;
-    }
-
     #cars {
         padding: 10px;
         padding-right: 0;
