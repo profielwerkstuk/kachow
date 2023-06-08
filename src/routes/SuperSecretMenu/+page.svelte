@@ -70,6 +70,12 @@
         let sorted = false;
         setInterval(() => {
             data = index.Cars || "loading";
+            data.sort(
+                (a, b) =>
+                    a.CarInstance.carName.localeCompare(b.CarInstance.carName) ||
+                    sortingMethod(a, b) ||
+                    (a.CarInstance.id < b.CarInstance.id ? -1 : 1)
+            );
         }, 1);
     });
 </script>
