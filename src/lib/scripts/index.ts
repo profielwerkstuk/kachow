@@ -82,6 +82,8 @@ export function load() {
 				// remove car with same id
 				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
 
+				if (change.doc.data().show) return;
+
 				const data = change.doc.data();
 				const loaded = new Genome(config.structure).import(data, config.structure)
 				const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance, "#" + (data.carColour ?? "3800fe"), data.carName);
@@ -109,7 +111,7 @@ export function load() {
 	async function runSim() {
 		const render = () => {
 			// filter all cars that are hidden
-			Cars = Cars.filter((car) => car.show);
+			Cars = Cars.filter((car) => !car.show);
 			Cars.forEach(Car => {
 				Car.CarInstance.update(Sim.tiles);
 

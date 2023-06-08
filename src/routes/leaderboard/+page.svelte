@@ -55,21 +55,40 @@
     <canvas id="canvas" />
     {#if index?.Cars}
         <div class="container">
+            <!-- 3 way switch with options, A B and C-->
+            <div id="selector">
+                <button
+                    on:click={() => {
+                        sortingMethod = sortingMethods[0];
+                        scoring = scoringMethods[0];
+                    }}>Fitness</button
+                >
+                <button
+                    on:click={() => {
+                        sortingMethod = sortingMethods[1];
+                        scoring = scoringMethods[1];
+                    }}>Afstand afgelegd</button
+                >
+                <button
+                    on:click={() => {
+                        sortingMethod = sortingMethods[2];
+                        scoring = scoringMethods[2];
+                    }}>Tijd overleefd</button
+                >
+            </div>
             <div id="cars">
                 {#each data as Car, i}
-                    {#if Car.show}
-                        <div id="CarInstance">
-                            <div class="info">
-                                <p class="rank">Nr. {i + 1}</p>
-                                <p class="name" style="color:{Car.CarInstance.carColour}">{Car.CarInstance.carName}</p>
-                                <p class="score">{JSON.stringify(Math.round(Car[scoring[0]][scoring[1]][scoring[2]]))}</p>
-                                <div class="buttons">
-                                    <button id="kill" on:click={() => dispatchEvent(new CustomEvent("resetCar", { detail: { id: Car.CarInstance.id } }))}>Restart</button>
-                                    <button id="remove" on:click={() => dispatchEvent(new CustomEvent("removeCar", { detail: { id: Car.CarInstance.id } }))}>Verwijderen</button>
-                                </div>
+                    <div id="CarInstance">
+                        <div class="info">
+                            <p class="rank">Nr. {i + 1}</p>
+                            <p class="name" style="color:{Car.CarInstance.carColour}">{Car.CarInstance.carName}</p>
+                            <p class="score">{JSON.stringify(Math.round(Car[scoring[0]][scoring[1]][scoring[2]]))}</p>
+                            <div class="buttons">
+                                <button id="kill" on:click={() => dispatchEvent(new CustomEvent("resetCar", { detail: { id: Car.CarInstance.id } }))}>Restart</button>
+                                <button id="remove" on:click={() => dispatchEvent(new CustomEvent("removeCar", { detail: { id: Car.CarInstance.id } }))}>Verwijderen</button>
                             </div>
                         </div>
-                    {/if}
+                    </div>
                 {/each}
             </div>
         </div>
