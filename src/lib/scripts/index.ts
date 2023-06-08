@@ -34,6 +34,12 @@ Vis.init();
 let fancy = false;
 let running = false;
 
+let includeHidden = false;
+
+export function EnableIncludeHidden() {
+	includeHidden = true;
+}
+
 export function load() {
 	addEventListener("terminateRun", () => {
 		console.log("Terminating run");
@@ -82,7 +88,7 @@ export function load() {
 				// remove car with same id
 				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
 
-				if (change.doc.data().show) return;
+				if (change.doc.data().show && !includeHidden) return;
 
 				const data = change.doc.data();
 				const loaded = new Genome(config.structure).import(data, config.structure)
@@ -99,6 +105,9 @@ export function load() {
 				// if change.doc.data().hidden is false, remove car with same id
 				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
 				const data = change.doc.data();
+
+				if (data.show && !includeHidden) return;
+
 				const loaded = new Genome(config.structure).import(data, config.structure)
 				const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance, "#" + (data.carColour ?? "3800fe"), data.carName);
 				Car.id = change.doc._key.path.segments.slice(-1)[0];

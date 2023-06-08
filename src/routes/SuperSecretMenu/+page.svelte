@@ -54,6 +54,8 @@
         index = await import("$lib/scripts/index");
         index.load();
 
+        index.EnableIncludeHidden()
+
         addEventListener("keypress", (e) => {
             if (e.key === "p") console.log(index.Cars);
             if (e.key === "s") data.sort((a, b) => (a.show ? 1 : -1));
