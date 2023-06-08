@@ -2,17 +2,24 @@
     import type { Genome } from "$lib/scripts/classes/NEAT/Genome";
     import type { Car as _Car } from "$lib/scripts/classes/Car";
     import { onMount } from "svelte";
-    import { deleteDoc, doc } from "firebase/firestore";
+    import { deleteDoc, doc, updateDoc } from "firebase/firestore";
     import { firebase } from "$lib/scripts/serverControl";
 
     let index: any;
 
-    type DING = { CarInstance: _Car; genome: Genome; fitness: number };
+    type DING = { CarInstance: _Car; genome: Genome; fitness: number, show: boolean };
     let data: DING[] = [];
 
-    function removeCar(id: number) {
+    function removeCar(id: string) {
         console.log("removing car with id: " + id);
         deleteDoc(doc(firebase, `genomes/${id}`));
+    }
+
+    function hideCar(id: number) {
+        // update document with id to have show = false
+        console.log("hiding car with id: " + id);
+
+        updateDoc(doc(firebase, `genomes/${id}`), { show: document.getElementById("hide-" + id).checked });
     }
 
     const sortingMethods = [
@@ -91,6 +98,7 @@
                             <div class="buttons">
                                 <button id="download" on:click={() => console.log(Car.genome.export())}>download</button>
                                 <button id="remove" on:click={() => removeCar(Car.CarInstance.id)}>Verwijderen</button>
+                                <input type="checkbox" checked={Car.show} id="hide-{Car.CarInstance.id}" on:click={() => hideCar(Car.CarInstance.id)} />
                             </div>
                         </div>
                     </div>

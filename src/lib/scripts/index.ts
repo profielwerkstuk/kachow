@@ -23,7 +23,7 @@ const carHeight = carWidth * 2; // Car size, multiplying to ensure integer
 const carViewingDistance = Math.floor(1 / 5 * tileSize)
 const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 2 * tileSize)];
 
-export let Cars: { CarInstance: _Car, genome: Genome, fitness: number }[] = [];
+export let Cars: { CarInstance: _Car, genome: Genome, fitness: number, show: boolean }[] = [];
 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution, true);
 const Vis = new Visualiser("canvas", Sim);
@@ -71,7 +71,7 @@ export function load() {
 		const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance, "#" + bestGenomeDataLoaded.carColour, bestGenomeDataLoaded.carName);
 
 		// Car.reset(true);
-		Cars.push({ CarInstance: Car, genome: loaded, fitness: bestGenomeDataLoaded.fitness });
+		Cars.push({ CarInstance: Car, genome: loaded, fitness: bestGenomeDataLoaded.fitness, show: false });
 
 		console.log("Added car", Cars);
 	}
@@ -81,15 +81,26 @@ export function load() {
 			if (change.type === "added") {
 				// remove car with same id
 				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
+
 				const data = change.doc.data();
 				const loaded = new Genome(config.structure).import(data, config.structure)
 				const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance, "#" + (data.carColour ?? "3800fe"), data.carName);
 				Car.id = change.doc._key.path.segments.slice(-1)[0];
-				Cars.push({ CarInstance: Car, genome: loaded, fitness: data.fitness });
+				Cars.push({ CarInstance: Car, genome: loaded, fitness: data.fitness, show: data.show });
 			}
 
 			if (change.type === "removed") {
 				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
+			}
+
+			if (change.type === "modified") {
+				// if change.doc.data().hidden is false, remove car with same id
+				Cars = Cars.filter((car) => car.CarInstance.id !== change.doc.id);
+				const data = change.doc.data();
+				const loaded = new Genome(config.structure).import(data, config.structure)
+				const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance, "#" + (data.carColour ?? "3800fe"), data.carName);
+				Car.id = change.doc._key.path.segments.slice(-1)[0];
+				Cars.push({ CarInstance: Car, genome: loaded, fitness: data.fitness, show: data.show });
 			}
 		});
 	});
@@ -97,6 +108,8 @@ export function load() {
 
 	async function runSim() {
 		const render = () => {
+			// filter all cars that are hidden
+			Cars = Cars.filter((car) => car.show);
 			Cars.forEach(Car => {
 				Car.CarInstance.update(Sim.tiles);
 
