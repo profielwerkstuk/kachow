@@ -7,7 +7,7 @@
 
     let index: any;
 
-    type DING = { CarInstance: _Car; genome: Genome; fitness: number, show: boolean };
+    type DING = { CarInstance: _Car; genome: Genome; fitness: number; show: boolean };
     let data: DING[] = [];
 
     function removeCar(id: string) {
@@ -19,7 +19,7 @@
         // update document with id to have show = false
         console.log("hiding car with id: " + id);
 
-        updateDoc(doc(firebase, `genomes/${id}`), { show: document.getElementById("hide-" + id).checked });
+        updateDoc(doc(firebase, `genomes/${id}`), { show: document.getElementById("hide-" + id)?.checked });
     }
 
     const sortingMethods = [
@@ -56,11 +56,12 @@
 
         addEventListener("keypress", (e) => {
             if (e.key === "p") console.log(index.Cars);
+            if (e.key === "s") data.sort((a, b) => (a.show ? 1 : -1));
         });
 
+        let sorted = false;
         setInterval(() => {
-            data = index.Cars ?? "loading";
-            data.sort(sortingMethod);
+            data = index.Cars || "loading";
         }, 1);
     });
 </script>
@@ -69,30 +70,9 @@
     <canvas id="canvas" />
     {#if index?.Cars}
         <div class="container">
-            <!-- 3 way switch with options, A B and C-->
-            <div id="selector">
-                <button
-                    on:click={() => {
-                        sortingMethod = sortingMethods[0];
-                        scoring = scoringMethods[0];
-                    }}>Fitness</button
-                >
-                <button
-                    on:click={() => {
-                        sortingMethod = sortingMethods[1];
-                        scoring = scoringMethods[1];
-                    }}>Afstand afgelegd</button
-                >
-                <button
-                    on:click={() => {
-                        sortingMethod = sortingMethods[2];
-                        scoring = scoringMethods[2];
-                    }}>Tijd overleefd</button
-                >
-            </div>
             <div id="cars">
                 {#each data as Car, i}
-                    <div id="CarInstance">
+                    <div id="CarInstance" class="hide{Car.show}">
                         <div class="info">
                             <p class="name">{Car.CarInstance.carName}</p>
                             <div class="buttons">
@@ -117,7 +97,7 @@
     }
 
     #wrapper {
-        width: 100vw;
+        /* width: 100vw; */
         height: 100vh;
         display: flex;
         flex-direction: row;
@@ -132,7 +112,7 @@
         display: flex;
         flex-direction: column;
 
-        overflow: hidden;
+        /* overflow: hidden; */
     }
 
     #selector {
@@ -143,31 +123,6 @@
         flex-direction: row;
         justify-content: space-between;
         gap: 10px;
-    }
-
-    #selector button {
-        height: 100%;
-        width: 100%;
-
-        padding: 20px;
-
-        font-family: "Poppins", sans-serif;
-
-        background-color: #405cf5;
-
-        border-radius: 6px;
-        border-width: 0;
-        box-shadow: rgba(50, 50, 93, 0.1) 0 0 0 1px inset, rgba(50, 50, 93, 0.1) 0 2px 5px 0, rgba(0, 0, 0, 0.07) 0 1px 1px 0;
-        box-sizing: border-box;
-        color: #fff;
-        cursor: pointer;
-
-        font-size: 100%;
-
-        outline: none;
-
-        text-align: center;
-        text-transform: none;
     }
 
     #cars {
@@ -226,5 +181,9 @@
 
         text-align: center;
         text-transform: none;
+    }
+
+    .hidetrue {
+        opacity: 40%;
     }
 </style>
