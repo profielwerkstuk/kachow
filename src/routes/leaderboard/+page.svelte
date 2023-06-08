@@ -5,7 +5,7 @@
 
     let index: any;
 
-    type DING = { CarInstance: _Car; genome: Genome; fitness: number, show: boolean };
+    type DING = { CarInstance: _Car; genome: Genome; fitness: number; show: boolean };
     let data: DING[] = [];
 
     const sortingMethods = [
