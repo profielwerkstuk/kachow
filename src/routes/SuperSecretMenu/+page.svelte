@@ -11,6 +11,12 @@
     let data: DING[] = [];
 
     function removeCar(id: string) {
+        // prompt for confirmation
+
+        const confirm = prompt("Are you sure you want to delete this car?");
+
+        if (confirm !== "yes") return;
+
         console.log("removing car with id: " + id);
         deleteDoc(doc(firebase, `genomes/${id}`));
     }
