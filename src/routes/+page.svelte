@@ -48,7 +48,13 @@
             formSubmitted = true;
             lastTimeActivated = Date.now();
             localStorage.setItem("lastTimeActivated", lastTimeActivated.toString());
-            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, carColour, carName, lastTimeActivated);
+            uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, carColour, carName, lastTimeActivated);
+
+            setTimeout(() => {
+                // reload browser
+                console.log("reloading");
+                window.location.reload();
+            }, 2000);
         }}
     >
         <label>
