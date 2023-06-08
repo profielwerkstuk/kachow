@@ -12,8 +12,8 @@ import { firebase } from "./serverControl";
 
 // 🧪 Simulation
 
-const simulationSize: [number, number] = [3, 3] // width, height
-const tileSize = 250;
+const simulationSize: [number, number] = [5, 5] // width, height
+const tileSize = 750 / 5;
 const roadWidth = Math.floor(2 / 7 * tileSize); // Flooring because using integers is just faster for calculations and difference is neglegable
 const roadCurveResolution = 5; // Increase this to have smoother curves, results in more calculations
 

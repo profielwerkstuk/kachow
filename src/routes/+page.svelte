@@ -2,7 +2,7 @@
     import { uploadToServer, getActivationFunctions, hardCodedActivationFunctionList } from "$lib/scripts/serverControl";
     import { onMount } from "svelte";
 
-    let activationFunction = "STEP";
+    let activationFunction = "ELU";
     let populationSize = 100;
     let addNodeMR = 80;
     let addConnectionMR = 40;
@@ -14,7 +14,7 @@
     let c3 = 2;
     let compatibilityThreshold = 1.5;
 
-    let carName = "superCar";
+    let carName = "";
 
     let carColour = "#3800fe";
 
@@ -42,24 +42,13 @@
 <h1>Maak je eigen auto!</h1>
 <h3>Iets onduidelijk? Vraag ons ernaar!</h3>
 
-{#if lastTimeActivated + 60000 < currentTime && lastTimeActivated != -1}
+{#if lastTimeActivated + 5000 < currentTime && lastTimeActivated != -1}
     <form
         on:submit={async () => {
             formSubmitted = true;
             lastTimeActivated = Date.now();
             localStorage.setItem("lastTimeActivated", lastTimeActivated.toString());
-            result = await uploadToServer(
-                activationFunction, 
-                addNodeMR, 
-                populationSize, 
-                addConnectionMR, 
-                removeNodeMR, 
-                removeConnectionMR, 
-                changeWeightMR, 
-                c1, c2, c3, 
-                compatibilityThreshold, 
-                carColour, carName, 
-                lastTimeActivated);
+            result = await uploadToServer(activationFunction, addNodeMR, populationSize, addConnectionMR, removeNodeMR, removeConnectionMR, changeWeightMR, c1, c2, c3, compatibilityThreshold, carColour, carName, lastTimeActivated);
         }}
     >
         <label>
@@ -117,7 +106,7 @@
         </label>
         <label>
             Uw naam
-            <input type="text" bind:value={carName} />
+            <input type="text" placeholder="Naam" bind:value={carName} />
         </label>
 
         <label>

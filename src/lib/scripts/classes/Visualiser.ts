@@ -84,17 +84,19 @@ export class Visualiser {
 				this.ctx.fillRect(p.startingPoint[0], p.startingPoint[1], 1, 1)
 
 				this.ctx.strokeStyle = "red";
+				this.ctx.lineWidth = 0.5;
 				this.ctx.beginPath();
 				this.ctx.moveTo(...p.startingPoint);
 
 				this.ctx.lineTo(...p.endingPoint);
 				this.ctx.stroke();
 			})
+			this.ctx.lineWidth = 1;
 
 			const intersections = Car.getIntersections(this.Simulation.tiles);
 			this.ctx.fillStyle = "purple";
 			intersections.forEach(point => {
-				if (point) this.ctx.fillRect(point[0] - 2, point[1] - 2, 4, 4);
+				if (point) this.ctx.fillRect(point[0] - 1, point[1] - 1, 2, 2);
 			});
 		}
 	}
